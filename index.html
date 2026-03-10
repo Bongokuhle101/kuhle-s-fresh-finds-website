@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kuhle's Fresh Finds</title>
+
+<style>
+
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial;background:#f7fdf6;color:#222}
+
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 18px;
+background:#2e7d32;
+color:white;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{font-weight:bold}
+
+.burger{
+background:none;
+border:none;
+font-size:22px;
+color:white;
+cursor:pointer;
+}
+
+/* CART ICON */
+
+.cart-icon{
+background:none;
+border:none;
+font-size:20px;
+cursor:pointer;
+color:white;
+position:relative;
+}
+
+.cart-badge{
+position:absolute;
+top:-6px;
+right:-8px;
+background:red;
+color:white;
+font-size:11px;
+padding:2px 6px;
+border-radius:50%;
+display:none;
+}
+
+/* PRODUCT GRID */
+
+main{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+.hero{
+text-align:center;
+padding:40px;
+background:linear-gradient(135deg,#81c784,#4caf50);
+color:white;
+border-radius:8px;
+}
+
+.product-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-top:20px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:12px;
+border-radius:8px;
+border:1px solid #ddd;
+display:flex;
+flex-direction:column;
+gap:8px;
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.card img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:6px;
+cursor:pointer;
+}
+
+.card h4{color:#1b5e20;cursor:pointer}
+
+.price{font-weight:bold;color:#1b5e20}
+
+.add-btn{
+background:#2e7d32;
+border:none;
+color:white;
+padding:8px;
+border-radius:5px;
+cursor:pointer;
+}
+
+/* CART DRAWER */
+
+.drawer{
+position:fixed;
+right:-350px;
+top:0;
+height:100%;
+width:320px;
+background:white;
+padding:20px;
+box-shadow:-5px 0 10px rgba(0,0,0,.2);
+transition:.3s;
+z-index:200;
+}
+
+.drawer.active{right:0}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+}
+
+.cart-total{
+margin-top:15px;
+font-weight:bold;
+text-align:right;
+}
+
+/* CHECKOUT */
+
+#checkoutArea{
+display:none;
+margin-top:30px;
+background:#e8f5e9;
+padding:15px;
+border-radius:8px;
+}
+
+.form-row{
+margin-bottom:10px;
+display:flex;
+flex-direction:column;
+gap:5px;
+}
+
+input,textarea{
+padding:8px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+#confirmOrderBtn{
+margin-top:10px;
+background:#1b5e20;
+color:white;
+border:none;
+padding:10px;
+border-radius:5px;
+cursor:pointer;
+display:none;
+}
+
+#thanksMsg{
+margin-top:10px;
+background:#c8e6c9;
+padding:10px;
+border-radius:6px;
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<div class="logo">Kuhle's Fresh Finds</div>
+
+<div style="display:flex;gap:15px">
+
+<button class="cart-icon" id="cartBtn">
+🛒
+<span class="cart-badge" id="cartCount">0</span>
+</button>
+
+<button class="burger">☰</button>
+
+</div>
+</header>
+
+<!-- CART DRAWER -->
+
+<div class="drawer" id="cartDrawer">
+
+<h3>Your Cart</h3>
+
+<div id="cartItems">
+<p style="text-align:center;color:#777">Cart empty</p>
+</div>
+
+<div class="cart-total" id="cartTotal">Total: R0.00</div>
+
+<button id="checkoutFromCart" class="add-btn" style="width:100%;margin-top:15px;">
+Checkout
+</button>
+
+</div>
+
+<main>
+
+<section class="hero">
+<h1>Fresh Vegetables Delivered</h1>
+<p>Order fresh vegetables at home</p>
+</section>
+
+<h2 style="margin-top:20px">Shopping Catalog</h2>
+
+<div id="productGrid" class="product-grid"></div>
+
+<button id="mainOrderBtn" class="add-btn" style="margin:20px auto;display:block">
+Place Order
+</button>
+
+<!-- CHECKOUT -->
+
+<div id="checkoutArea">
+
+<h3>Checkout</h3>
+
+<form id="checkoutForm">
+
+<div class="form-row">
+<label>Name</label>
+<input id="fullName" type="text">
+</div>
+
+<div class="form-row">
+<label>Email</label>
+<input id="email" type="email">
+</div>
+
+<div class="form-row">
+<label>Phone</label>
+<input id="phone" type="text">
+</div>
+
+<div class="form-row">
+<label>Address</label>
+<textarea id="address"></textarea>
+</div>
+
+<button class="add-btn" type="submit">Order</button>
+
+</form>
+
+<button id="confirmOrderBtn">Confirm Order</button>
+<button id="cancelOrderBtn" style="background:#c62828;color:white;border:none;padding:10px;border-radius:6px;margin-left:10px;display:none;">
+Cancel
+</button>
+
+<div id="orderDisplay"></div>
+
+<div id="thanksMsg">
+Thanks for your order! Our team will contact you shortly.
+</div>
+
+</div>
+
+</main>
+
+<script>
+
+/* PRODUCTS */
+
+const PRODUCTS = [
+{id:1,name:"Carrots",price:10,image:"images/Carrots.jpg"},
+{id:2,name:"Tomatoes",price:12,image:"images/Tomato.jpg"},
+{id:3,name:"Spinach",price:12,image:"images/Spinach.jpg"},
+{id:4,name:"Potatoes",price:15,image:"images/Potatoes.jpg"},
+{id:5,name:"Onions",price:12,image:"images/Onion.jpg"}
+];
+
+let cart={};
+
+/* ELEMENTS */
+
+const grid=document.getElementById("productGrid");
+const cartDrawer=document.getElementById("cartDrawer");
+const cartBtn=document.getElementById("cartBtn");
+const cartItems=document.getElementById("cartItems");
+const cartTotal=document.getElementById("cartTotal");
+const cartCount=document.getElementById("cartCount");
+
+/* RENDER PRODUCTS */
+
+function renderProducts(){
+
+grid.innerHTML="";
+
+PRODUCTS.forEach(p=>{
+
+const card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<img src="${p.image}" onclick="addToCart(${p.id})">
+
+<h4 onclick="addToCart(${p.id})">${p.name}</h4>
+
+<div class="price">R${p.price}</div>
+
+<button class="add-btn" onclick="addToCart(${p.id})">
+Add to Cart
+</button>
+
+`;
+
+grid.appendChild(card);
+
+});
+
+}
+
+renderProducts();
+
+/* ADD TO CART */
+
+function addToCart(id){
+
+const product=PRODUCTS.find(p=>p.id===id);
+
+if(!cart[id]){
+
+cart[id]={...product,qty:1};
+
+}else{
+
+cart[id].qty++;
+
+}
+
+updateCart();
+
+}
+
+/* REMOVE */
+
+function removeFromCart(id){
+
+cart[id].qty--;
+
+if(cart[id].qty<=0) delete cart[id];
+
+updateCart();
+
+}
+
+/* UPDATE CART */
+
+function updateCart(){
+
+cartItems.innerHTML="";
+
+let total=0;
+let count=0;
+
+for(let id in cart){
+
+let item=cart[id];
+
+count+=item.qty;
+
+total+=item.qty*item.price;
+
+const div=document.createElement("div");
+
+div.className="cart-item";
+
+div.innerHTML=`
+<span>${item.name} x${item.qty}</span>
+
+<div>
+<button onclick="addToCart(${id})">+</button>
+<button onclick="removeFromCart(${id})">-</button>
+</div>
+`;
+
+cartItems.appendChild(div);
+
+}
+
+if(count===0){
+
+cartItems.innerHTML='<p style="text-align:center;color:#777">Cart empty</p>';
+
+}
+
+cartTotal.innerText="Total: R"+total.toFixed(2);
+
+cartCount.innerText=count;
+
+cartCount.style.display=count>0?"block":"none";
+
+}
+
+/* CART BUTTON */
+
+cartBtn.onclick=()=>{
+
+cartDrawer.classList.toggle("active");
+
+};
+
+/* CHECKOUT */
+
+const checkoutArea=document.getElementById("checkoutArea");
+
+document.getElementById("mainOrderBtn").onclick=()=>{
+
+checkoutArea.style.display="block";
+
+};
+
+/* FORM */
+
+const form=document.getElementById("checkoutForm");
+const orderDisplay=document.getElementById("orderDisplay");
+const confirmBtn=document.getElementById("confirmOrderBtn");
+const cancelBtn = document.getElementById('cancelOrderBtn');
+const thanks=document.getElementById("thanksMsg");
+
+form.addEventListener("submit",e=>{
+
+e.preventDefault();
+
+const name=document.getElementById("fullName").value;
+const email=document.getElementById("email").value;
+const phone=document.getElementById("phone").value;
+const address=document.getElementById("address").value;
+
+orderDisplay.innerHTML=`
+
+<strong>Order Details</strong><br><br>
+
+Name: ${name}<br>
+Email: ${email}<br>
+Phone: ${phone}<br>
+Address: ${address}
+
+`;
+
+confirmBtn.style.display='block';
+cancelBtn.style.display='inline-block';
+
+});
+
+/* CONFIRM */
+
+confirmBtn.onclick=()=>{
+
+thanks.style.display="block";
+
+form.reset();
+
+confirmBtn.style.display="none";
+
+};
+
+cancelBtn.addEventListener("click", () => {
+
+orderDisplay.style.display = "none";
+confirmBtn.style.display = "none";
+cancelBtn.style.display = "none";
+thanksMsg.style.display = "none";
+
+});
+</script>
+
+</body>
+</html>

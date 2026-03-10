@@ -1,0 +1,162 @@
+[ 
+  {
+    "id": 1,
+    "name": "Tomato",
+    "price": 25.0,
+    "unit": "per kg",
+    "category": "Fruit Vegetables",
+    "stock": 50,
+ "image": "images\\Tomato.jpg",
+    "description": "Fresh red tomatoes, perfect for salads and cooking."
+  },
+  {
+    "id": 2,
+    "name": "Potato",
+    "price": 18.0,
+    "unit": "per kg",
+    "category": "Root Vegetables",
+    "stock": 100,
+    "image": "images\\Potatoes.jpg",
+    "description": "Brown potatoes suitable for boiling, baking, and frying."
+  },
+  {
+    "id": 3,
+    "name": "Carrot",
+    "price": 22.0,
+    "unit": "per kg",
+    "category": "Root Vegetables",
+    "stock": 60,
+    "image": "images\\Carrots.jpg",
+    "description": "Crunchy orange carrots rich in vitamin A."
+  },
+  {
+    "id": 4,
+    "name": "Lettuce",
+    "price": 15.0,
+    "unit": "per head",
+    "category": "Leafy Greens",
+    "stock": 40,
+    "image": "images\\lettuce.jpg",
+    "description": "Fresh green leaves for healthy meals."
+  },
+{ 
+    "id": 5,
+    "name": "Broccoli", 
+    "price": 18.0,
+    "unit": "per head",
+    "category": "Cruciferous vegetable",
+    "stock": 35,
+    "image": "images\\Broccoli.jpg",
+    "description": "Fresh, crisp and loaded with vitamins to keep you healthy."
+  },
+{ 
+    "id": 6,
+    "name": "Cauliflower", 
+    "price": 18.0,
+    "unit": "per head",
+    "category": "Cruciferous vegetables", 
+    "stock": 36,
+    "image": "images\\Cauliflower.jpg",
+    "description": "The sweet tender hybrid that brings a new crunch to your meals." 
+  },
+  { 
+    "id": 7, 
+    "name": "Onion",
+    "price": 20.0,
+    "unit": "per kg",
+    "category": "Bulb Vegetables",
+    "stock": 80,
+    "image": "images\\Onion.jpg",
+    "description": "Golden onions for everyday cooking." 
+  }, 
+  {  
+    "id": 8, 
+    "name": "Pumpkin",
+    "price": 20.0,
+    "unit": "per kg",
+    "category": "Gourd vegetables",
+    "stock": 68,
+    "image": "images\\Pumpkin.jpg",
+    "description": "Fresh pumpkins with a rich, mildly sweet flavor and hearty texture." 
+  },
+  {
+    "id": 9, 
+    "name": "Red pepper",
+    "price": 15.0,
+    "unit": "per kg",
+    "category": "Fruit",
+    "stock": 80,
+    "image": "images\\Red pepper.jpg",
+    "description": "Crisp red peppers with a sweet, juicy crunch." 
+  },
+  {
+    "id": 10, 
+    "name": "Green pepper",
+    "price": 15.0,
+    "unit": "per kg",
+    "category": "Fruit",
+    "stock": 80,
+    "image": "images\\Green pepper.jpg",
+    "description": "Crisp, green peppers with a fresh, mildly sweet bite." 
+  },
+  {
+   "id": 11, 
+    "name": "Chilli pepper",
+    "price": 15.0,
+    "unit": "per kg",
+    "category": "Fruit",
+    "stock": 80,
+    "image": "images\\Chilli pepper.jpg",
+    "description": "Fiery, vibrant chilli peppers delivering a bold kick of heat and flavor."
+  },
+  {
+   "id": 12, 
+    "name": "Sweet corn",
+    "price": 26.0,
+    "unit": "per kg",
+    "category": "Fruit",
+    "stock": 45,
+    "image": "images\\Sweet corn.jpg",
+    "description": "Juicy, golden sweet corn bursting with natural sweetness and crunch."
+  },
+  {
+    "id": 13, 
+    "name": "Cabbage",
+    "price": 14.0,
+    "unit": "per head",
+    "category": "Cruciferous vegetable",
+    "stock": 55,
+    "image": "images\\Cabbage.jpg",
+    "description": "Crisp, fresh cabbage with a clean crunch and mild, earthy flavor."
+  },
+  {
+    "id": 14, 
+    "name": "Egg plant",
+    "price": 26.0,
+    "unit": "per kg",
+    "category": "Fruit",
+    "stock": 38,
+    "image": "images\\Egg plant.jpg",
+    "description": "Rich, tender egg plant with a smooth texture and a deep savory flavour."
+  },
+  {
+     "id": 15, 
+    "name": "Spinach",
+    "price": 14.0,
+    "unit": "per bunch",
+    "category": "Cruciferous vegetable",
+    "stock": 38,
+    "image": "images\\Spinach.jpg",
+    "description": "Fresh tender spinach, pure green goodness in every munch."
+  },
+   {
+     "id": 16, 
+    "name": "Butternut",
+    "price": 14.0,
+    "unit": "per kg",
+    "category": "Gourd vegetables",
+    "stock": 38,
+    "image": "images\\Butternut.jpg",
+    "description": "Sweet, creamy butternut squash with a smooth texture and rich, nutty flavor."
+  }
+  ] 
