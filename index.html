@@ -1,504 +1,837 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kuhle's Fresh Finds</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kuhle's Fresh Finds</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7fdf6;
+      color: #222;
+    }
 
-/* RESET */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Arial;background:#f7fdf6;color:#222}
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: #2e7d32;
+      color: #fff;
+      z-index: 40;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-/* HEADER */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px 18px;
-background:#2e7d32;
-color:white;
-position:sticky;
-top:0;
-z-index:100;
-}
+    .logo {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
 
-.logo{font-weight:bold}
 
-.burger{
-background:none;
-border:none;
-font-size:22px;
-color:white;
-cursor:pointer;
-}
+    /* Cart Icon*/
+    .cart-icon {
+      position: relative;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 5px;
+      transition: transform 0.2s;
+    }
 
-/* CART ICON */
+    .cart-icon:hover {
+      transform: scale(1.1);
+    }
 
-.cart-icon{
-background:none;
-border:none;
-font-size:20px;
-cursor:pointer;
-color:white;
-position:relative;
-}
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff5252;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-weight: bold;
+      display: none;
+      /*Hidden if 0 */
+    }
 
-.cart-badge{
-position:absolute;
-top:-6px;
-right:-8px;
-background:red;
-color:white;
-font-size:11px;
-padding:2px 6px;
-border-radius:50%;
-display:none;
-}
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s;
+      z-index: 80;
+    }
 
-/* PRODUCT GRID */
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
 
-main{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
 
-.hero{
-text-align:center;
-padding:40px;
-background:linear-gradient(135deg,#81c784,#4caf50);
-color:white;
-border-radius:8px;
-}
+    /* Sidebar Drawer */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 320px;
+      max-width: 92vw;
+      height: 100%;
+      background: #fff;
+      box-shadow: -6px 0 18px rgba(0, 0, 0, .18);
+      padding: 18px;
+      overflow: auto;
+      transition: right .28s cubic-bezier(.2, .9, .3, 1);
+      z-index: 110;
+    }
 
-.product-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-margin-top:20px;
-}
+    .drawer.active {
+      right: 0;
+    }
 
-/* CARD */
+    .drawer .close {
+      display: inline-block;
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
 
-.card{
-background:white;
-padding:12px;
-border-radius:8px;
-border:1px solid #ddd;
-display:flex;
-flex-direction:column;
-gap:8px;
-transition:.2s;
-}
+    .drawer h3 {
+      color: #1b5e20;
+      margin: 8px 0 10px;
+    }
 
-.card:hover{
-transform:translateY(-4px);
-box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
 
-.card img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:6px;
-cursor:pointer;
-}
+    /* Sidebar items */
+    .nav-item {
+      background: #e9f7ee;
+      color: #17642a;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
 
-.card h4{color:#1b5e20;cursor:pointer}
+    .nav-item:hover {
+      background: #d8f0df;
+    }
 
-.price{font-weight:bold;color:#1b5e20}
+    .submenu {
+      display: none;
+      margin: 8px 0 14px;
+      padding: 8px 10px;
+      background: #fbfffb;
+      border-radius: 6px;
+    }
 
-.add-btn{
-background:#2e7d32;
-border:none;
-color:white;
-padding:8px;
-border-radius:5px;
-cursor:pointer;
-}
+    .submenu.open {
+      display: block;
+    }
 
-/* CART DRAWER */
+    .submenu p,
+    .submenu ul {
+      color: #333;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
 
-.drawer{
-position:fixed;
-right:-350px;
-top:0;
-height:100%;
-width:320px;
-background:white;
-padding:20px;
-box-shadow:-5px 0 10px rgba(0,0,0,.2);
-transition:.3s;
-z-index:200;
-}
+    .submenu ul {
+      list-style: disc;
+      margin-left: 18px;
+    }
 
-.drawer.active{right:0}
+    .submenu input[type="search"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #cfe6d2;
+      border-radius: 6px;
+    }
 
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin-bottom:8px;
-}
 
-.cart-total{
-margin-top:15px;
-font-weight:bold;
-text-align:right;
-}
+    /* Main content */
+    main {
+      padding: 22px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
-/* CHECKOUT */
+    .hero {
+      text-align: center;
+      padding: 36px 10px;
+      background: linear-gradient(135deg, #81c784, #4caf50);
+      color: #fff;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
 
-#checkoutArea{
-display:none;
-margin-top:30px;
-background:#e8f5e9;
-padding:15px;
-border-radius:8px;
-}
+    .hero h1 {
+      margin-bottom: 6px;
+      font-size: 1.5rem;
+    }
 
-.form-row{
-margin-bottom:10px;
-display:flex;
-flex-direction:column;
-gap:5px;
-}
+    .section-title {
+      font-size: 1.1rem;
+      color: #1b5e20;
+      margin: 12px 0;
+    }
 
-input,textarea{
-padding:8px;
-border-radius:5px;
-border:1px solid #ccc;
-}
 
-#confirmOrderBtn{
-margin-top:10px;
-background:#1b5e20;
-color:white;
-border:none;
-padding:10px;
-border-radius:5px;
-cursor:pointer;
-display:none;
-}
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      margin-top: 12px;
+    }
 
-#thanksMsg{
-margin-top:10px;
-background:#c8e6c9;
-padding:10px;
-border-radius:6px;
-display:none;
-}
 
-</style>
+    /* Product Card*/
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #e6efea;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: stretch;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    /*Hover Effect */
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      border-color: #81c784;
+    }
+
+    .card h4 {
+      margin: 0;
+      color: #1b5e20;
+    }
+
+    .card p {
+      margin: 0;
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    .card .price {
+      font-weight: 700;
+      color: #1b5e20;
+    }
+
+
+    /* Image styling */
+    .card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #eee;
+    }
+
+
+    /* Buttons */
+    .add-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: auto;
+    }
+
+    .add-btn:hover {
+      background: #1b5e20;
+    }
+
+
+    /* Global Place Order button */
+    #mainOrderBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+
+    /* Checkout area */
+    #checkoutArea {
+      margin-top: 20px;
+      display: none;
+      background: #e8f5e9;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #cfe6d2;
+    }
+
+    #checkoutArea.open {
+      display: block;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+      max-width: 520px;
+    }
+
+    input[type=text],
+    input[type=email],
+    textarea {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #cddfd0;
+      width: 100%;
+    }
+
+    .error {
+      color: #c62828;
+      font-size: 0.86rem;
+    }
+
+    .order-result {
+      margin-top: 12px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #d8efdb;
+      color: #1b5e20;
+    }
+
+    #confirmOrderBtn {
+      margin-top: 12px;
+      padding: 10px 18px;
+      background: #1b5e20;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+    }
+
+    #thanksMsg {
+      display: none;
+      margin-top: 12px;
+      background: #d0f0c0;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #a8dfa0;
+      color: #1b5e20;
+    }
+
+
+    /* Cart Drawer Specifics */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: right;
+      color: #1b5e20;
+    }
+
+    .cart-remove {
+      color: red;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+
+    /* Responsive */
+    @media (max-width:600px) {
+      .drawer {
+        width: 92vw;
+        right: -92vw;
+      }
+
+      .drawer.active {
+        right: 0;
+      }
+
+      .hero h1 {
+        font-size: 1.25rem;
+      }
+    }
+  </style> -->
+
+
 </head>
 
 <body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">Kuhle's Fresh Finds</div>
+    <div style="display:flex; gap:15px; align-items:center;">
+      <!-- Cart Icon -->
+      <button class="cart-icon" id="cartBtn">
+        🛒
+        <span id="cartCount" class="cart-badge">0</span>
+      </button>
+      <button class="burger" id="burger">☰</button>
+    </div>
+  </header>
+  <!-- Overlay -->
+  <div id="overlay" class="overlay"></div>
+  <!-- Sidebar Drawer -->
+  <aside id="drawer" class="drawer">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+      <h3 style="flex:1;margin:0;">Menu</h3>
+      <button class="close" id="drawerClose">✖</button>
+    </div>
+    <div class="nav-item" data-target="homeSub">Home</div>
+    <div id="homeSub" class="submenu">
+      <label style="font-weight:600;font-size:0.95rem;margin-bottom:6px;display:block;">Search catalog</label>
+      <input id="drawerSearch" type="search" placeholder="Search vegetables..." />
+    </div>
+    <div class="nav-item" data-target="shopSub">Shop</div>
+    <div id="shopSub" class="submenu">
+      <p style="font-weight:600;margin-bottom:8px;">Available Vegetables</p>
+      <ul>
+        <li>Carrots</li>
+        <li>Tomatoes</li>
+        <li>Spinach</li>
+        <li>Potatoes</li>
+        <li>Onions</li>
+        <li>Lettuce</li>
+        <li>Cauliflower</li>
+        <li>Broccolli</li>
+        <li>Pumpkin</li>
+        <li>Sweet corn</li>
+        <li>Red pepper</li>
+        <li>Green pepper</li>
+        <li>Chilli pepper</li>
+        <li>Egg plant</li>
+        <li>Butternut</li>
+        <li>Cabbage</li>
+      </ul>
+    </div>
+    <div class="nav-item" data-target="aboutSub">About</div>
+    <div id="aboutSub" class="submenu">
+      <p>Kuhle's Fresh Finds believes that fresh, healthy, and delicious vegetables shouldn't be hard to find. Our
+        mission is simple; bring the farm to your doorstep We patner with local farmers and trusted suppliers to ensure
+        every vegetable you order is handpicked, high quality, and packed with nutrients. From crisp greens to vibrant
+        root vegetables, we make eating healthy easy, convenient, and sustainable. Wether you re planning a family meal,
+        stocking up for the week, or experimenting with new recipes, Kuhle's Farm Fresh is here to make your kitchen
+        vibrant and your shopping effortless. Freshness, convenience, and taste delivered with care. Join us in
+        supporting local agriculture and embracing a healthier lifestyle, one vegetable at a time!</p>
+    </div>
+    <div class="nav-item" data-target="servicesSub">Services</div>
+    <div id="servicesSub" class="submenu">
+      <ul>
+        <li>Farm-Fresh Quality in a click of a button</li>
+        <li>Vegetable shopping at the comfort of your seat</li>
+        <li>Flexible Delivery services</li>
+        <li>Eco-Friendly Packaging</li>
+        <li>Support Local Farmers to encourage growth and development</li>
+      </ul>
+    </div>
+    <div class="nav-item" data-target="contactSub">Contact</div>
+    <div id="contactSub" class="submenu">
+      <p>We'd love to here from you! Whether you have questions, feedback, or need help with your order, our team is
+        here to assist</p>
+      <p>Email: support@kuhlesfreshfinds.com</p>
+      <p>Phone: +27 82 839 5364</p>
+      <p>Or come meet up with us in person,we located </p>
+      <p>Address: 830 Tipperay Way, Faerie Glen, Pretoria</p>
+      <p>you can follow us on social media to get the latest updates, seasonal recipes, and special offers: Facebook:
+        @kuhlesfreshfinds Instagram: @kuhlesfreshfinds Twitter: @kuhlesfreshfinds</p>
+      <p>Your satisfaction and fresh veggies are our top priorities, reach out anytime, and we'll make sure you are
+        taken care of!</p>
+    </div>
+  </aside>
+  <!-- Cart Drawer (New) -->
+  <aside id="cartDrawer" class="drawer" style="z-index:120;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+      <h3 style="flex:1;margin:0;">Your Cart</h3>
+      <button class="close" id="cartClose">✖</button>
+    </div>
+    <div id="cartItems">
+      <p style="text-align:center; color:#666; margin-top:20px;">Your cart is empty</p>
+    </div>
+    <div class="cart-total" id="cartTotal">Total: R0.00</div>
+    <button id="checkoutFromCart" hidden style="width:100%; margin-top:15px; padding:10px; background:#2e7d32; color:#fff; border:none; border-radius:6px; cursor:pointer;">Proceed
+      to Checkout</button>
+  </aside>
+  <!-- Main Content -->
+  <main>
+    <section class="hero">
+      <h1>Fresh Vegetables Delivered at your doorstep</h1>
+      <p style="opacity:.95;">Order fresh and affordable vegetables at the comfort of your seat</p>
+    </section>
+    <section id="catalogSection">
+      <h2 class="section-title">Shopping Catalog</h2>
+      <div id="productGrid" class="product-grid"></div>
+      <button id="mainOrderBtn">Place Order</button>
 
-<header class="header">
-<div class="logo">Kuhle's Fresh Finds</div>
+      <!-- Checkout -->
+      <div id="checkoutArea">
+        <h3>Checkout</h3>
+        <form id="checkoutForm" novalidate>
+          <div class="form-row">
+            <label>Full name <input id="fullName" type="text" placeholder="Your full name"></label>
+            <div id="errName" class="error"></div>
+          </div>
+          <div class="form-row">
+            <label>Email <input id="email" type="email" placeholder="you@example.com"></label>
+            <div id="errEmail" class="error"></div>
+          </div>
+          <div class="form-row">
+            <label>Phone <input id="phone" type="text" placeholder="+27 82 ..."></label>
+            <div id="errPhone" class="error"></div>
+          </div>
+          <div class="form-row">
+            <label>Address <textarea id="address" rows="3" placeholder="Delivery address"></textarea></label>
+            <div id="errAddress" class="error"></div>
+          </div>
+          <!-- Updated Button Style -->
+          <button type="submit" class="add-btn" style="margin-top:10px;">Order</button>
+        </form>
 
-<div style="display:flex;gap:15px">
+        <button id="confirmOrderBtn">Confirm Order</button>
+        <div id="orderDisplay" class="order-result" style="display:none;"></div>
+        <div id="thanksMsg">Thanks for your order! Our team will contact you shortly.</div>
+      </div>
 
-<button class="cart-icon" id="cartBtn">
-🛒
-<span class="cart-badge" id="cartCount">0</span>
-</button>
+    </section>
+  </main>
+  <footer class="site-footer"> 
 
-<button class="burger">☰</button>
+    <p>&copy; <span id="year"></span> Kuhle’s Fresh Finds. All rights reserved.</p> 
+
+  </footer>
+  <script>
+    const cartDrawer = document.getElementById("cartDrawer");
+    const cartBtn = document.getElementById("cartBtn");
+
+    cartBtn.addEventListener("click", () => {
+      cartDrawer.classList.toggle("active");
+      overlay.classList.toggle("active");
+    });
+
+    cartClose.addEventListener('click', (e) => {
+      cartDrawer.classList.remove('active');
+      // e.preventDefault();
+      if (!cartDrawer.classList.contains("active")) {
+        overlay.classList.remove("active");
+      }
+    });
+
+    // Products
+    const PRODUCTS = [
+      { id: 1, name: 'Carrots', desc: 'Crunchy orange carrots rich in vitamin A', price: 10, image: "images\\Carrots.jpg" },
+      { id: 2, name: 'Tomatoes', desc: 'Ripe red tomatoes', price: 12, image: "images\\Tomato.jpg" },
+      { id: 3, name: 'Spinach', desc: 'Fresh leafy spinach', price: 12, image: "images\\Spinach.jpg" },
+      { id: 4, name: 'Potatoes', desc: 'Starchy potatoes', price: 15, image: "images\\Potatoes.jpg" },
+      { id: 5, name: 'Onions', desc: 'Savory onions', price: 12, image: "images\\Onion.jpg" },
+      { id: 6, name: 'Cabbage', desc: 'Crisp, fresh cabbage with a clean crunch and mild, earthy flavor', price: 10, image: "images\\Cabbage.jpg" },
+      { id: 7, name: 'Cauliflower', desc: 'The sweet tender hybrid that brings a new crunch to your meals', price: 14, image: "images\\Cauliflower.jpg" },
+      { id: 8, name: 'Chilli pepper', desc: 'Vibrant, fiery, and packed with bold taste', price: 14, image: "images\\Chillipepper.jpg" },
+      { id: 9, name: 'Butternut', desc: 'Sweet smooth and irresistibly tasty', price: 15, image: "images\\Butternut.jpg" },
+      { id: 10, name: 'Lettuce', desc: 'Fresh green leaves for healthy meals', price: 12, image: "images\\Lettuce.jpg" },
+      { id: 11, name: 'Sweet corn', desc: 'Naturally sweet, golden and bursting with juicy flavour', price: 15, image: "images\\Sweetcorn.jpg" },
+      { id: 12, name: 'Red pepper', desc: 'bright, bold, and naturally sweet', price: 12, image: "images\\Redpepper.jpg" },
+      { id: 13, name: 'Green pepper', desc: 'Fresh crisp and garden bright', price: 12, image: "images\\Greenpepper.jpg" },
+      { id: 14, name: 'Pumpkin', desc: 'Rich, sweet, and full of autumn goodness', price: 15, image: "images\\Pumpkin.jpg" },
+      { id: 15, name: 'Egg plant', desc: 'glossy, tender and packed with flavor', price: 16, image: "images\\Eggplant.jpg" },
+      { id: 16, name: 'Broccoli', desc: 'Fresh, crisp and loaded with vitamins to keep you healthy', price: 14, image: "images\\Broccoli.jpg" },
+    ];
+
+    let cart = {};
+
+    const productGrid = document.getElementById('productGrid');
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+    const burger = document.getElementById('burger');
+    const drawerClose = document.getElementById('drawerClose');
+    const checkoutArea = document.getElementById('checkoutArea');
+    const drawerSearch = document.getElementById('drawerSearch');
+    const orderDisplay = document.getElementById('orderDisplay');
+    const confirmBtn = document.getElementById('confirmOrderBtn');
+    const thanksMsg = document.getElementById('thanksMsg');
+
+    function updateCart() {
+
+      const cartItems = document.getElementById("cartItems");
+      const cartCount = document.getElementById("cartCount");
+      const cartTotal = document.getElementById("cartTotal");
+
+      cartItems.innerHTML = "";
+
+      let total = 0;
+      let count = 0;
+
+      for (let id in cart) {
+
+        const item = cart[id];
+
+        total += item.price * item.qty;
+        count += item.qty;
+
+        const div = document.createElement("div");
+
+        div.className = "cart-item";
+
+        div.innerHTML = `
+<span>${item.name} x${item.qty}</span>
+
+<div>
+<button onclick="addToCart(${item.id})">+</button>
+<button onclick="removeFromCart(${item.id})">-</button>
+</div>
+`;
+
+        cartItems.appendChild(div);
+
+      }
+
+      cartTotal.innerText = "Total: R" + total;
+
+      cartCount.innerText = count;
+
+      cartCount.style.display = count > 0 ? "block" : "none";
+    }
+
+    // Render products
+    function renderProducts(list = PRODUCTS) {
+      productGrid.innerHTML = '';
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+
+  <img src="${p.image}" alt="${p.name}">
+  <h4>${p.name}</h4>
+  <p>${p.desc}</p>
+  <div class="price">R${p.price}</div>
+  <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+`;
+
+        `;
 
 </div>
-</header>
-
-<!-- CART DRAWER -->
-
-<div class="drawer" id="cartDrawer">
-
-<h3>Your Cart</h3>
-
-<div id="cartItems">
-<p style="text-align:center;color:#777">Cart empty</p>
-</div>
-
-<div class="cart-total" id="cartTotal">Total: R0.00</div>
-
-<button id="checkoutFromCart" class="add-btn" style="width:100%;margin-top:15px;">
-Checkout
-</button>
-
-</div>
-
-<main>
-
-<section class="hero">
-<h1>Fresh Vegetables Delivered</h1>
-<p>Order fresh vegetables at home</p>
-</section>
-
-<h2 style="margin-top:20px">Shopping Catalog</h2>
-
-<div id="productGrid" class="product-grid"></div>
-
-<button id="mainOrderBtn" class="add-btn" style="margin:20px auto;display:block">
-Place Order
-</button>
-
-<!-- CHECKOUT -->
-
-<div id="checkoutArea">
-
-<h3>Checkout</h3>
-
-<form id="checkoutForm">
-
-<div class="form-row">
-<label>Name</label>
-<input id="fullName" type="text">
-</div>
-
-<div class="form-row">
-<label>Email</label>
-<input id="email" type="email">
-</div>
-
-<div class="form-row">
-<label>Phone</label>
-<input id="phone" type="text">
-</div>
-
-<div class="form-row">
-<label>Address</label>
-<textarea id="address"></textarea>
-</div>
-
-<button class="add-btn" type="submit">Order</button>
-
-</form>
-
-<button id="confirmOrderBtn">Confirm Order</button>
-<button id="cancelOrderBtn" style="background:#c62828;color:white;border:none;padding:10px;border-radius:6px;margin-left:10px;display:none;">
-Cancel
-</button>
-
-<div id="orderDisplay"></div>
-
-<div id="thanksMsg">
-Thanks for your order! Our team will contact you shortly.
-</div>
-
-</div>
-
-</main>
-
-<script>
-
-/* PRODUCTS */
-
-const PRODUCTS = [
-{id:1,name:"Carrots",price:10,image:"images/Carrots.jpg"},
-{id:2,name:"Tomatoes",price:12,image:"images/Tomato.jpg"},
-{id:3,name:"Spinach",price:12,image:"images/Spinach.jpg"},
-{id:4,name:"Potatoes",price:15,image:"images/Potatoes.jpg"},
-{id:5,name:"Onions",price:12,image:"images/Onion.jpg"}
-];
-
-let cart={};
-
-/* ELEMENTS */
-
-const grid=document.getElementById("productGrid");
-const cartDrawer=document.getElementById("cartDrawer");
-const cartBtn=document.getElementById("cartBtn");
-const cartItems=document.getElementById("cartItems");
-const cartTotal=document.getElementById("cartTotal");
-const cartCount=document.getElementById("cartCount");
-
-/* RENDER PRODUCTS */
-
-function renderProducts(){
-
-grid.innerHTML="";
-
-PRODUCTS.forEach(p=>{
-
-const card=document.createElement("div");
-
-card.className="card";
-
-card.innerHTML=`
-
-<img src="${p.image}" onclick="addToCart(${p.id})">
-
-<h4 onclick="addToCart(${p.id})">${p.name}</h4>
-
-<div class="price">R${p.price}</div>
 
 <button class="add-btn" onclick="addToCart(${p.id})">
 Add to Cart
 </button>
+    `;
+        productGrid.appendChild(card);
+      });
+    }
+    renderProducts();
 
+    function addToCart(id) {
+
+      const product = PRODUCTS.find(p => p.id === id);
+
+      if (!cart[id]) {
+        cart[id] = { ...product, qty: 1 };
+      } else {
+        cart[id].qty++;
+      }
+
+      updateCart();
+
+    }
+
+    function removeFromCart(id) {
+
+      cart[id].qty--;
+
+      if (cart[id].qty <= 0) {
+        delete cart[id];
+      }
+
+      updateCart();
+
+    }
+
+    // Drawer toggle
+    burger.addEventListener('click', () => { drawer.classList.add('active'); overlay.classList.add('active'); });
+    drawerClose.addEventListener('click', () => { drawer.classList.remove('active'); overlay.classList.remove('active'); });
+    document.getElementById('checkoutFromCart').addEventListener('click', () => { drawer.classList.remove('active');});
+    // overlay.classList.remove('active'); });
+    // overlay.addEventListener('click', () => { drawer.classList.remove('active');
+    //  overlay.classList.remove('active'); });
+
+    // Collapsible sections
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const target = document.getElementById(item.dataset.target);
+        document.querySelectorAll('.submenu').forEach(s => { if (s !== target) s.classList.remove('open'); });
+        target.classList.toggle('open');
+        if (item.dataset.target === 'homeSub') drawerSearch.focus();
+      });
+    });
+
+
+    // Drawer search filter
+    drawerSearch.addEventListener('input', () => {
+      const q = drawerSearch.value.trim().toLowerCase();
+      const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      renderProducts(filtered);
+    });
+
+
+    // Main Place Order button
+    document.getElementById('mainOrderBtn').addEventListener('click', () => {
+      checkoutArea.classList.add('open');
+      checkoutArea.scrollIntoView({ behavior: 'smooth'});
+    });
+
+     document.getElementById('checkoutFromCart').addEventListener('click', (e) => {
+        cartDrawer.classList.remove('active');
+      // e.preventDefault();
+      if (!cartDrawer.classList.contains("active")) {
+        overlay.classList.remove("active");
+      }
+    });
+
+
+    // Checkout form submission
+    const checkoutForm = document.getElementById('checkoutForm');
+    checkoutForm.addEventListener('submit', e => {
+      e.preventDefault();
+      // Clear errors
+      ['errName', 'errEmail', 'errPhone', 'errAddress'].forEach(id => document.getElementById(id).textContent = '');
+      const name = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      let ok = true;
+     
+
+
+      if (!name) { document.getElementById('errName').textContent = 'Required'; ok = false; }
+      //if (!email || !/^[^\s@]+@[^\s@]+.[^\s@]+\$/.test(email)) { document.getElementById('errEmail').textContent = 'Invalid email'; ok = false; }
+      if (!phone) { document.getElementById('errPhone').textContent = 'Required'; ok = false; }
+      if (!address) { document.getElementById('errAddress').textContent = 'Required'; ok = false; }
+      if (!ok) return;
+
+
+const orderData = {
+    customer: { name, email, phone, address },
+    items: [],
+    total: 0
+  };
+   for (let id in cart) {
+    const item = cart[id];
+    orderData.items.push({
+      name: item.name,
+      qty: item.qty,
+      price: item.price,
+      subtotal: item.price * item.qty
+    });
+    orderData.total += item.price * item.qty;
+  }
+   let itemsHtml = orderData.items.map(i => 
+    `<div>${i.name} x${i.qty} - R${i.subtotal}</div>`
+  ).join('');
+
+      // Show order summary and confirm button
+      orderDisplay.innerHTML = `
+<div><strong>Order details:</strong></div>
+<div><strong>Name:</strong> ${name}</div>
+<div><strong>Email:</strong> ${email}</div>
+<div><strong>Phone:</strong> ${phone}</div>
+<div><strong>Address:</strong> ${address}</div>
+ <div><strong>Items:</strong></div>
+    ${itemsHtml}
+    <div><strong>Total:</strong> R${orderData.total}</div>
 `;
+      orderDisplay.style.display = 'block';
+      confirmBtn.style.display = 'block';
+      thanksMsg.style.display = 'none';
+    });
 
-grid.appendChild(card);
 
+    // Confirm Order button
+  // --- ALTERNATIVE: NO SERVER NEEDED ---
+confirmBtn.addEventListener('click', () => {
+  // 1. Gather Data
+  const name = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const address = document.getElementById('address').value.trim();
+  
+  // Calculate cart details
+  let cartItemsList = [];
+  let total = 0;
+  for (let id in cart) {
+    const item = cart[id];
+    cartItemsList.push({
+        name: item.name,
+        price: item.price,
+        qty: item.qty
+    });
+    total += item.price * item.qty;
+  }
+
+  const orderData = {
+      customer: { name, email, phone, address },
+      items: cartItemsList,
+      total: total,
+      date: new Date().toISOString()
+  };
+
+  // 2. Save to localStorage (browser storage)
+  let existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+  existingOrders.push(orderData);
+  localStorage.setItem('orders', JSON.stringify(existingOrders));
+
+  // 3. Show success message
+  thanksMsg.style.display = 'block';
+  checkoutForm.reset();
+  orderDisplay.style.display = 'none';
+  confirmBtn.style.display = 'none';
+  cart = {};
+  updateCart();
+  
+  alert('Order saved to browser storage! Check console for data.');
+  console.log('Order saved:', orderData);
 });
-
-}
-
-renderProducts();
-
-/* ADD TO CART */
-
-function addToCart(id){
-
-const product=PRODUCTS.find(p=>p.id===id);
-
-if(!cart[id]){
-
-cart[id]={...product,qty:1};
-
-}else{
-
-cart[id].qty++;
-
-}
-
-updateCart();
-
-}
-
-/* REMOVE */
-
-function removeFromCart(id){
-
-cart[id].qty--;
-
-if(cart[id].qty<=0) delete cart[id];
-
-updateCart();
-
-}
-
-/* UPDATE CART */
-
-function updateCart(){
-
-cartItems.innerHTML="";
-
-let total=0;
-let count=0;
-
-for(let id in cart){
-
-let item=cart[id];
-
-count+=item.qty;
-
-total+=item.qty*item.price;
-
-const div=document.createElement("div");
-
-div.className="cart-item";
-
-div.innerHTML=`
-<span>${item.name} x${item.qty}</span>
-
-<div>
-<button onclick="addToCart(${id})">+</button>
-<button onclick="removeFromCart(${id})">-</button>
-</div>
-`;
-
-cartItems.appendChild(div);
-
-}
-
-if(count===0){
-
-cartItems.innerHTML='<p style="text-align:center;color:#777">Cart empty</p>';
-
-}
-
-cartTotal.innerText="Total: R"+total.toFixed(2);
-
-cartCount.innerText=count;
-
-cartCount.style.display=count>0?"block":"none";
-
-}
-
-/* CART BUTTON */
-
-cartBtn.onclick=()=>{
-
-cartDrawer.classList.toggle("active");
-
-};
-
-/* CHECKOUT */
-
-const checkoutArea=document.getElementById("checkoutArea");
-
-document.getElementById("mainOrderBtn").onclick=()=>{
-
-checkoutArea.style.display="block";
-
-};
-
-/* FORM */
-
-const form=document.getElementById("checkoutForm");
-const orderDisplay=document.getElementById("orderDisplay");
-const confirmBtn=document.getElementById("confirmOrderBtn");
-const cancelBtn = document.getElementById('cancelOrderBtn');
-const thanks=document.getElementById("thanksMsg");
-
-form.addEventListener("submit",e=>{
-
-e.preventDefault();
-
-const name=document.getElementById("fullName").value;
-const email=document.getElementById("email").value;
-const phone=document.getElementById("phone").value;
-const address=document.getElementById("address").value;
-
-orderDisplay.innerHTML=`
-
-<strong>Order Details</strong><br><br>
-
-Name: ${name}<br>
-Email: ${email}<br>
-Phone: ${phone}<br>
-Address: ${address}
-
-`;
-
-confirmBtn.style.display='block';
-cancelBtn.style.display='inline-block';
-
-});
-
-/* CONFIRM */
-
-confirmBtn.onclick=()=>{
-
-thanks.style.display="block";
-
-form.reset();
-
-confirmBtn.style.display="none";
-
-};
-
-cancelBtn.addEventListener("click", () => {
-
-orderDisplay.style.display = "none";
-confirmBtn.style.display = "none";
-cancelBtn.style.display = "none";
-thanksMsg.style.display = "none";
-
-});
-</script>
+  
+  </script>
 
 </body>
+
 </html>
